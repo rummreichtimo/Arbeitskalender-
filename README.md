@@ -22,15 +22,24 @@ Zwei Ebenen, damit nichts verloren geht:
 1. `localStorage` – sofort, funktioniert auch offline und ohne Anmeldung.
 2. `db`-Capability des Artefakts – geräteübergreifend (iPhone und Desktop), sobald verfügbar.
 
-Abgeglichen wird pro Monat über `updatedAt` (last writer wins). Ist die Capability nicht
-verfügbar, läuft alles unverändert rein lokal weiter; das Statusfeld oben rechts zeigt
-`lokal` bzw. `synchron`.
+Abgeglichen wird **tagweise**: jeder Eintrag trägt einen eigenen Zeitstempel `t`,
+gelöschte Tage hinterlassen eine Löschmarke in `del`. Beim Zusammenführen gewinnt je Tag
+der jüngere Stand. Ein veralteter Stand vom Konto kann dadurch weder neuere Einträge
+überschreiben noch gelöschte Tage zurückholen. Ist die Capability nicht verfügbar, läuft
+alles unverändert rein lokal weiter; das Statusfeld oben rechts zeigt `lokal` bzw. `synchron`.
+
+> **Wichtig:** Vom Konto gelieferte Snapshots sind eingefroren (`Object.freeze`). Alles, was
+> in den App-Zustand wandert, muss über `normalizeMonth()` kopiert werden – ein direkt
+> übernommenes Snapshot-Objekt lässt sich später nicht beschreiben und bricht das Speichern.
+> `ensureMonth()` sichert das zusätzlich vor jedem Schreibzugriff ab.
 
 ## Datenmodell
 
 ```
 settings/app        { limit: 43, updatedAt }
-months/2026-09      { days: { "2026-09-04": { from, to, pause, note } }, updatedAt }
+months/2026-09      { days: { "2026-09-04": { from, to, pause, note, t } },
+                      del:  { "2026-09-05": t },
+                      updatedAt }
 ```
 
 ## Entwicklung
