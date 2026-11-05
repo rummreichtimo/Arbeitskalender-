@@ -1,0 +1,35 @@
+{
+  "name": "getriebe-simulation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Interaktive 3D-Lernsimulation eines 4-Gang-Wandlerautomatikgetriebes (Simpson-Radsatz + Overdrive)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:single": "tsc -b && vite build --mode single",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc -b",
+    "build:artifact": "npm run build:single && node scripts/make-artifact.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "gsap": "3.13.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "three": "0.176.0",
+    "zustand": "5.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.9",
+    "@types/three": "0.176.0",
+    "@vitejs/plugin-react": "4.7.0",
+    "typescript": "5.9.3",
+    "vite": "6.4.5",
+    "vite-plugin-singlefile": "2.3.0",
+    "vitest": "4.1.12"
+  }
+}

@@ -47,3 +47,9 @@ months/2026-09      { days: { "2026-09-04": { from, to, pause, note, t } },
 `index.html` wird beim Veröffentlichen in ein `<!doctype>…<head>…<body>`-Gerüst eingebettet
 und enthält deshalb selbst keine `html`/`head`/`body`-Tags. Zum lokalen Öffnen im Browser
 reicht die Datei trotzdem aus.
+
+## Weiteres Projekt im Repository
+
+`getriebe-simulation/` – interaktive 3D-Lernsimulation eines Automatikgetriebes
+(React, TypeScript, Three.js). Start: `cd getriebe-simulation && npm install && npm run dev`.
+Details in [`getriebe-simulation/README.md`](getriebe-simulation/README.md).
