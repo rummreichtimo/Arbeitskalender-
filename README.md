@@ -48,7 +48,12 @@ months/2026-09      { days: { "2026-09-04": { from, to, pause, note, t } },
 und enthält deshalb selbst keine `html`/`head`/`body`-Tags. Zum lokalen Öffnen im Browser
 reicht die Datei trotzdem aus.
 
-## Weiteres Projekt im Repository
+## Weitere Projekte im Repository
+
+`ernaehrungsplaner/` – **Wochentisch**, interaktiver Ernährungs- und Wochenplaner mit Rezepten,
+automatischer Einkaufsliste und Vorratsverwaltung (React, TypeScript).
+Start: `cd ernaehrungsplaner && npm install && npm run build`, dann `dist/preview.html` öffnen.
+Details in [`ernaehrungsplaner/README.md`](ernaehrungsplaner/README.md).
 
 `getriebe-simulation/` – interaktive 3D-Lernsimulation eines Automatikgetriebes
 (React, TypeScript, Three.js). Start: `cd getriebe-simulation && npm install && npm run dev`.

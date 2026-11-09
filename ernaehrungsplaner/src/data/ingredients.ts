@@ -1,0 +1,216 @@
+import type { Ingredient } from '../lib/types';
+
+// Zutatendatenbank.
+// Preise: geschätzte Durchschnittspreise deutscher Supermärkte und Discounter (Eigenmarken, Stand 2026),
+// jeweils für die angegebene Packungsgröße. Nährwerte: typische Werte je 100 g bzw. 100 ml
+// (Orientierung an Bundeslebensmittelschlüssel und üblichen Packungsangaben) – gerundet und geschätzt.
+
+type Base = Omit<Ingredient, 'id' | 'name' | 'cat' | 'unit' | 'pack' | 'price' | 'n'>;
+const I = (
+  id: string,
+  name: string,
+  cat: Ingredient['cat'],
+  unit: Ingredient['unit'],
+  pack: number,
+  price: number,
+  n: Ingredient['n'],
+  extra: Base,
+): Ingredient => ({ id, name, cat, unit, pack, price, n, ...extra });
+
+const STK: [string, string] = ['Stück', 'Stück'];
+const BUND: [string, string] = ['Bund', 'Bund'];
+
+export const INGREDIENTS: Ingredient[] = [
+  // Obst & Gemüse
+  I('apfel', 'Äpfel', 'obst-gemuese', 'stk', 1, 0.45, [52, 0.3, 11.4, 0.2, 2.0], { pg: 180, pl: ['Apfel', 'Äpfel'], grp: 'obst', loose: true, keep: 21, col: '#C8463A' }),
+  I('banane', 'Bananen', 'obst-gemuese', 'stk', 1, 0.28, [93, 1.1, 20, 0.2, 1.8], { pg: 120, pl: ['Banane', 'Bananen'], grp: 'obst', loose: true, keep: 6, col: '#F2D25C' }),
+  I('orange', 'Orangen', 'obst-gemuese', 'stk', 1, 0.5, [42, 1, 8.3, 0.2, 2.2], { pg: 150, pl: ['Orange', 'Orangen'], grp: 'obst', loose: true, keep: 14, col: '#F08A24' }),
+  I('zitrone', 'Zitronen', 'obst-gemuese', 'stk', 1, 0.4, [35, 0.7, 3.2, 0.6, 1.3], { pg: 60, pl: ['Zitrone', 'Zitronen'], loose: true, keep: 21, col: '#F4DC4A', hide: true }),
+  I('limette', 'Limetten', 'obst-gemuese', 'stk', 1, 0.35, [30, 0.7, 1.9, 0.2, 0.3], { pg: 40, pl: ['Limette', 'Limetten'], loose: true, keep: 14, col: '#8DBF3F', hide: true }),
+  I('mango', 'Mangos', 'obst-gemuese', 'stk', 1, 1.49, [62, 0.6, 12.8, 0.4, 1.7], { pg: 300, pl: ['Mango', 'Mangos'], grp: 'obst', keep: 5, col: '#F5A623' }),
+  I('avocado', 'Avocados', 'obst-gemuese', 'stk', 1, 1.19, [160, 2, 1.9, 15, 6.7], { pg: 150, pl: ['Avocado', 'Avocados'], grp: 'gemuese', keep: 4, col: '#86A84A' }),
+  I('tomate', 'Tomaten', 'obst-gemuese', 'g', 500, 1.79, [18, 0.9, 2.6, 0.2, 1.2], { pg: 100, pl: STK, grp: 'gemuese', loose: true, keep: 6, col: '#D9412E' }),
+  I('kirschtomaten', 'Kirschtomaten', 'obst-gemuese', 'g', 250, 1.49, [20, 1, 2.9, 0.2, 1.3], { grp: 'gemuese', keep: 6, col: '#E2412D' }),
+  I('gurke', 'Salatgurken', 'obst-gemuese', 'stk', 1, 0.79, [12, 0.6, 1.8, 0.2, 0.5], { pg: 400, pl: ['Salatgurke', 'Salatgurken'], grp: 'gemuese', keep: 7, col: '#5E9E4A' }),
+  I('paprika', 'Paprikaschoten', 'obst-gemuese', 'stk', 1, 0.79, [31, 1, 6, 0.3, 2.1], { pg: 160, pl: ['Paprikaschote', 'Paprikaschoten'], grp: 'gemuese', loose: true, keep: 7, col: '#E2532E' }),
+  I('zucchini', 'Zucchini', 'obst-gemuese', 'g', 250, 0.69, [17, 1.2, 2.2, 0.3, 1.1], { pg: 250, pl: STK, grp: 'gemuese', loose: true, keep: 7, col: '#6E9E3E' }),
+  I('brokkoli', 'Brokkoli', 'obst-gemuese', 'g', 500, 1.49, [34, 2.8, 4, 0.4, 3], { pg: 500, pl: ['Kopf', 'Köpfe'], grp: 'gemuese', keep: 4, col: '#3F7F3A', packLabel: '1 Kopf (ca. 500 g)' }),
+  I('blumenkohl', 'Blumenkohl', 'obst-gemuese', 'g', 800, 1.99, [25, 2, 2.3, 0.3, 2], { pg: 800, pl: ['Kopf', 'Köpfe'], grp: 'gemuese', keep: 5, col: '#EDE5CC', packLabel: '1 Kopf (ca. 800 g)' }),
+  I('moehre', 'Möhren', 'obst-gemuese', 'g', 1000, 1.19, [36, 0.9, 6.7, 0.2, 2.9], { pg: 80, pl: STK, grp: 'gemuese', keep: 14, col: '#EE8A2F' }),
+  I('kartoffel', 'Kartoffeln (festkochend)', 'obst-gemuese', 'g', 1500, 1.99, [72, 2, 15.4, 0.1, 1.6], { pg: 100, pl: STK, keep: 30, col: '#D9B26A', packLabel: 'Netz 1,5 kg' }),
+  I('suesskartoffel', 'Süßkartoffeln', 'obst-gemuese', 'g', 500, 1.79, [86, 1.6, 20, 0.1, 3], { pg: 300, pl: STK, grp: 'gemuese', loose: true, keep: 14, col: '#E07B39' }),
+  I('zwiebel', 'Zwiebeln', 'obst-gemuese', 'g', 1000, 1.29, [33, 1.2, 6.4, 0.2, 1.8], { pg: 80, pl: STK, grp: 'gemuese', keep: 30, col: '#E8D3A2', packLabel: 'Netz 1 kg' }),
+  I('rote-zwiebel', 'Rote Zwiebeln', 'obst-gemuese', 'g', 500, 1.19, [36, 1.2, 7, 0.1, 1.7], { pg: 80, pl: STK, grp: 'gemuese', keep: 30, col: '#8E3B5E' }),
+  I('knoblauch', 'Knoblauch', 'obst-gemuese', 'stk', 10, 0.45, [141, 6, 28, 0.1, 1.8], { pg: 4, pl: ['Knoblauchzehe', 'Knoblauchzehen'], packLabel: '1 Knolle (ca. 10 Zehen)', keep: 30, col: '#F1EAD7', hide: true }),
+  I('ingwer', 'Ingwer', 'obst-gemuese', 'g', 100, 0.69, [80, 1.8, 15.8, 0.8, 2], { pg: 15, pl: ['daumengroßes Stück', 'daumengroße Stücke'], loose: true, keep: 21, col: '#D9B56E', hide: true }),
+  I('lauch', 'Lauch', 'obst-gemuese', 'g', 250, 0.79, [25, 2.2, 3.3, 0.3, 2.3], { pg: 250, pl: ['Stange', 'Stangen'], grp: 'gemuese', loose: true, keep: 10, col: '#9CC46B' }),
+  I('sellerie', 'Staudensellerie', 'obst-gemuese', 'g', 500, 1.49, [16, 0.7, 2.2, 0.2, 1.6], { pg: 50, pl: ['Stange', 'Stangen'], al: ['sellerie'], grp: 'gemuese', keep: 10, col: '#A9C97A' }),
+  I('champignons', 'Champignons', 'obst-gemuese', 'g', 400, 1.79, [22, 3.1, 0.6, 0.3, 2], { grp: 'gemuese', keep: 4, col: '#C8B79A' }),
+  I('spinat', 'Babyspinat', 'obst-gemuese', 'g', 200, 1.79, [23, 2.9, 0.6, 0.4, 2.6], { grp: 'gemuese', keep: 3, col: '#3E7A3A' }),
+  I('blattsalat', 'Kopfsalat', 'obst-gemuese', 'stk', 1, 0.99, [14, 1.2, 1.1, 0.2, 1.4], { pg: 300, pl: ['Kopfsalat', 'Kopfsalate'], grp: 'gemuese', keep: 4, col: '#8CC152' }),
+  I('rucola', 'Rucola', 'obst-gemuese', 'g', 125, 1.29, [25, 2.6, 2, 0.7, 1.6], { grp: 'gemuese', keep: 3, col: '#4D8A3A' }),
+  I('radieschen', 'Radieschen', 'obst-gemuese', 'g', 180, 0.79, [15, 1, 2.1, 0.1, 1.6], { pg: 180, pl: BUND, grp: 'gemuese', keep: 6, col: '#D7385E', packLabel: '1 Bund' }),
+  I('kuerbis', 'Hokkaido-Kürbis', 'obst-gemuese', 'g', 1200, 2.29, [38, 1.1, 7.9, 0.1, 2], { pg: 1200, pl: ['Kürbis', 'Kürbisse'], grp: 'gemuese', keep: 30, col: '#E8812A', packLabel: '1 Kürbis (ca. 1,2 kg)' }),
+  I('rote-bete', 'Rote Bete (vorgegart)', 'obst-gemuese', 'g', 500, 1.19, [43, 1.6, 8, 0.1, 2.5], { grp: 'gemuese', keep: 10, col: '#8E1F43' }),
+  I('fruehlingszwiebel', 'Frühlingszwiebeln', 'obst-gemuese', 'g', 100, 0.69, [32, 1.8, 4.7, 0.2, 2.6], { pg: 15, pl: ['Stange', 'Stangen'], grp: 'gemuese', keep: 6, col: '#7DB24A', packLabel: '1 Bund' }),
+  I('petersilie', 'Petersilie', 'obst-gemuese', 'g', 30, 0.89, [36, 4.4, 1.5, 0.4, 4.3], { pg: 30, pl: BUND, keep: 5, col: '#3D8B3D', packLabel: '1 Bund' }),
+  I('schnittlauch', 'Schnittlauch', 'obst-gemuese', 'g', 30, 0.89, [27, 3.6, 1.6, 0.7, 6], { pg: 30, pl: BUND, keep: 5, col: '#4A9A40', packLabel: '1 Bund' }),
+  I('basilikum', 'Basilikum', 'obst-gemuese', 'g', 25, 1.49, [41, 3.1, 5.1, 0.6, 3], { pg: 25, pl: ['Topf', 'Töpfe'], keep: 7, col: '#3C8C46', packLabel: '1 Topf' }),
+  I('dill', 'Dill', 'obst-gemuese', 'g', 20, 0.99, [43, 3.5, 5, 0.8, 2], { pg: 20, pl: BUND, keep: 5, col: '#6FA84A', packLabel: '1 Bund' }),
+
+  // Brot & Backwaren
+  I('vollkornbrot', 'Vollkornbrot', 'brot', 'g', 500, 1.69, [200, 6.8, 38, 1.2, 8], { pg: 50, pl: ['Scheibe', 'Scheiben'], al: ['gluten'], grp: 'vollkorn', keep: 6, col: '#7A5233', sub: ['gf-brot'] }),
+  I('toast', 'Vollkorntoast', 'brot', 'g', 500, 1.29, [245, 9, 42, 4, 6], { pg: 25, pl: ['Scheibe', 'Scheiben'], al: ['gluten'], grp: 'vollkorn', keep: 7, col: '#C9A06A', sub: ['gf-brot'] }),
+  I('broetchen', 'Vollkornbrötchen', 'brot', 'stk', 1, 0.45, [250, 9, 44, 3, 6], { pg: 60, pl: ['Vollkornbrötchen', 'Vollkornbrötchen'], al: ['gluten'], grp: 'vollkorn', loose: true, keep: 2, col: '#B07A45', sub: ['gf-brot'], subF: { 'gf-brot': 60 } }),
+  I('tortilla', 'Weizentortillas', 'brot', 'stk', 6, 1.39, [300, 8.5, 50, 7, 3.5], { pg: 62, pl: ['Weizentortilla', 'Weizentortillas'], al: ['gluten'], keep: 14, col: '#E9D5A6', sub: ['mais-tortilla'], packLabel: '6er-Packung' }),
+  I('gf-brot', 'Glutenfreies Brot', 'brot', 'g', 400, 3.29, [240, 3, 45, 5, 6], { pg: 40, pl: ['Scheibe', 'Scheiben'], keep: 7, col: '#C8A57A' }),
+  I('mais-tortilla', 'Maistortillas (glutenfrei)', 'brot', 'stk', 8, 2.49, [220, 5.7, 45, 2.8, 6], { pg: 30, pl: ['Maistortilla', 'Maistortillas'], keep: 14, col: '#E9C46A', packLabel: '8er-Packung' }),
+
+  // Milchprodukte, Eier & Kühlregal
+  I('milch', 'Milch (1,5 %)', 'kuehl', 'ml', 1000, 1.09, [47, 3.4, 4.9, 1.5, 0], { al: ['milch'], an: ['milch'], lac: true, grp: 'milch', keep: 5, col: '#F7F5EE', sub: ['milch-lf', 'haferdrink', 'sojadrink'] }),
+  I('milch-lf', 'Laktosefreie Milch (1,5 %)', 'kuehl', 'ml', 1000, 1.39, [47, 3.4, 4.9, 1.5, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 5, col: '#F7F5EE' }),
+  I('haferdrink', 'Haferdrink', 'kuehl', 'ml', 1000, 1.29, [45, 0.8, 6.7, 1.5, 0.8], { al: ['gluten'], keep: 5, col: '#EFE6D2' }),
+  I('sojadrink', 'Sojadrink', 'kuehl', 'ml', 1000, 1.39, [39, 3.3, 2.5, 1.8, 0.6], { al: ['soja'], keep: 5, col: '#F2EBD9' }),
+  I('joghurt', 'Naturjoghurt (3,5 %)', 'kuehl', 'g', 500, 0.89, [61, 3.5, 4.1, 3.5, 0], { al: ['milch'], an: ['milch'], lac: true, grp: 'milch', keep: 5, el: 15, tl: 5, col: '#F6F3EA', sub: ['joghurt-lf', 'soja-joghurt'] }),
+  I('joghurt-lf', 'Laktosefreier Naturjoghurt', 'kuehl', 'g', 500, 1.29, [61, 3.5, 4.1, 3.5, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 5, el: 15, tl: 5, col: '#F6F3EA' }),
+  I('soja-joghurt', 'Sojajoghurt natur', 'kuehl', 'g', 500, 1.59, [46, 4, 2.3, 2.2, 0.6], { al: ['soja'], keep: 5, el: 15, tl: 5, col: '#F2EEE2' }),
+  I('quark', 'Magerquark', 'kuehl', 'g', 500, 1.19, [67, 12, 4, 0.3, 0], { al: ['milch'], an: ['milch'], lac: true, grp: 'milch', keep: 5, el: 15, col: '#F8F6F0', sub: ['quark-lf', 'soja-joghurt'] }),
+  I('quark-lf', 'Laktosefreier Magerquark', 'kuehl', 'g', 500, 1.49, [67, 12, 4, 0.3, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 5, el: 15, col: '#F8F6F0' }),
+  I('frischkaese', 'Frischkäse (natur)', 'kuehl', 'g', 175, 1.09, [230, 5.5, 3.5, 21, 0], { al: ['milch'], an: ['milch'], lac: true, grp: 'milch', keep: 7, el: 15, col: '#F7F4EC', sub: ['frischkaese-lf', 'vegan-frischkaese'] }),
+  I('frischkaese-lf', 'Laktosefreier Frischkäse', 'kuehl', 'g', 175, 1.49, [230, 5.5, 3.5, 21, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 7, el: 15, col: '#F7F4EC' }),
+  I('vegan-frischkaese', 'Pflanzlicher Frischkäse', 'kuehl', 'g', 150, 1.99, [220, 2.5, 8, 19, 1.5], { keep: 7, el: 15, col: '#F2EEE4' }),
+  I('huettenkaese', 'Körniger Frischkäse', 'kuehl', 'g', 200, 0.99, [98, 12, 3, 4.3, 0], { al: ['milch'], an: ['milch'], lac: true, grp: 'milch', keep: 5, col: '#F4F1E8' }),
+  I('butter', 'Butter', 'kuehl', 'g', 250, 2.39, [741, 0.7, 0.6, 83, 0], { al: ['milch'], an: ['milch'], keep: 30, el: 12, tl: 5, col: '#F6E3A1', hide: true, sub: ['margarine'] }),
+  I('margarine', 'Pflanzenmargarine', 'kuehl', 'g', 250, 1.49, [712, 0.2, 0.4, 80, 0], { keep: 30, el: 12, tl: 5, col: '#F3E29A', hide: true }),
+  I('sahne', 'Schlagsahne (30 %)', 'kuehl', 'ml', 200, 0.99, [292, 2.4, 3.2, 30, 0], { al: ['milch'], an: ['milch'], lac: true, keep: 4, col: '#FBF8EF', sub: ['sahne-lf', 'hafer-cuisine', 'soja-cuisine'] }),
+  I('sahne-lf', 'Laktosefreie Sahne', 'kuehl', 'ml', 200, 1.39, [292, 2.4, 3.2, 30, 0], { al: ['milch'], an: ['milch'], keep: 4, col: '#FBF8EF' }),
+  I('hafer-cuisine', 'Hafer-Kochcreme', 'kuehl', 'ml', 200, 1.29, [150, 0.5, 7, 13, 1], { al: ['gluten'], keep: 4, col: '#F4EEDF' }),
+  I('soja-cuisine', 'Soja-Kochcreme', 'kuehl', 'ml', 200, 1.29, [170, 2.5, 4, 16, 0.5], { al: ['soja'], keep: 4, col: '#F4EEDF' }),
+  I('schmand', 'Schmand', 'kuehl', 'g', 200, 0.89, [240, 2.6, 3.6, 24, 0], { al: ['milch'], an: ['milch'], lac: true, keep: 6, el: 15, col: '#FAF7EE', sub: ['hafer-cuisine', 'soja-cuisine'] }),
+  I('eier', 'Eier (Freiland, Größe M)', 'kuehl', 'stk', 10, 3.29, [154, 12.9, 0.7, 11.2, 0], { pg: 55, pl: ['Ei', 'Eier'], al: ['ei'], an: ['ei'], keep: 21, col: '#F4C542', packLabel: '10er-Packung' }),
+  I('gouda', 'Gouda (Scheiben)', 'kuehl', 'g', 250, 1.99, [356, 25, 0, 27.4, 0], { pg: 25, pl: ['Scheibe', 'Scheiben'], al: ['milch'], an: ['milch'], grp: 'milch', keep: 14, col: '#F2C14E', sub: ['vegan-kaese'] }),
+  I('reibekaese', 'Reibekäse (Emmentaler)', 'kuehl', 'g', 200, 1.89, [380, 28, 0, 30, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 10, col: '#F3D27A', sub: ['vegan-kaese'] }),
+  I('parmesan', 'Parmesan (am Stück)', 'kuehl', 'g', 150, 3.29, [392, 35, 0, 28, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 30, el: 6, col: '#EBD9A6', hide: true, sub: ['hefeflocken'], subF: { hefeflocken: 0.5 } }),
+  I('feta', 'Feta', 'kuehl', 'g', 200, 1.79, [265, 16, 0.5, 22, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 7, col: '#F7F5EF', sub: ['vegan-feta'] }),
+  I('mozzarella', 'Mozzarella', 'kuehl', 'g', 125, 0.89, [250, 18, 1, 19, 0], { al: ['milch'], an: ['milch'], grp: 'milch', keep: 3, col: '#FAF8F1', packLabel: '125 g (abgetropft)', sub: ['vegan-kaese'] }),
+  I('vegan-feta', 'Pflanzlicher Feta-Ersatz', 'kuehl', 'g', 200, 2.49, [270, 0.5, 20, 21, 0], { keep: 7, col: '#F4F2EA' }),
+  I('vegan-kaese', 'Pflanzlicher Käse (gerieben)', 'kuehl', 'g', 150, 2.49, [300, 0.3, 20, 24, 0], { keep: 10, col: '#F1D58A' }),
+  I('tofu', 'Tofu natur', 'kuehl', 'g', 400, 2.29, [122, 13, 1.5, 7.2, 0.5], { al: ['soja'], keep: 4, col: '#EFE7D0' }),
+  I('spaetzle', 'Frische Eierspätzle', 'kuehl', 'g', 500, 1.79, [175, 6, 32, 2.5, 1.5], { al: ['gluten', 'ei'], an: ['ei'], keep: 5, col: '#F2D36B' }),
+  I('gnocchi', 'Kartoffel-Gnocchi', 'kuehl', 'g', 500, 1.49, [150, 3.5, 33, 0.4, 2], { al: ['gluten'], keep: 10, col: '#E9D9A9', sub: ['gf-gnocchi'] }),
+  I('gf-gnocchi', 'Glutenfreie Gnocchi', 'kuehl', 'g', 400, 2.49, [155, 2.5, 35, 0.5, 2], { keep: 10, col: '#E9D9A9' }),
+  I('tortellini', 'Tortellini (Ricotta-Spinat)', 'kuehl', 'g', 250, 1.69, [270, 10, 42, 6.5, 3], { al: ['gluten', 'ei', 'milch'], an: ['ei', 'milch'], keep: 5, col: '#EBCB7A' }),
+  I('flammkuchenteig', 'Flammkuchenteig', 'kuehl', 'stk', 1, 1.49, [308, 7, 49, 8.5, 2], { pg: 260, pl: ['Rolle Flammkuchenteig', 'Rollen Flammkuchenteig'], al: ['gluten'], keep: 10, col: '#E8D2A0' }),
+  I('hummus', 'Hummus', 'kuehl', 'g', 200, 1.49, [250, 7, 11, 19, 5], { al: ['sesam'], grp: 'huelsen', keep: 5, el: 20, col: '#D9B97C' }),
+  I('speck', 'Speckwürfel', 'kuehl', 'g', 150, 1.69, [290, 15, 0.5, 26, 0], { an: ['fleisch'], grp: 'rot', keep: 7, col: '#C85A4F' }),
+  I('wuerstchen', 'Wiener Würstchen', 'kuehl', 'g', 250, 1.99, [260, 13, 1, 23, 0], { pg: 50, pl: STK, an: ['fleisch'], grp: 'rot', keep: 7, col: '#C9744A' }),
+
+  // Fleisch & Fisch (Frischetheke / Kühlregal)
+  I('haehnchenbrust', 'Hähnchenbrustfilet', 'fleisch-fisch', 'g', 400, 4.99, [105, 23.5, 0, 1.2, 0], { an: ['fleisch'], grp: 'fleisch', keep: 2, col: '#E8B48A' }),
+  I('haehnchenschenkel', 'Hähnchenschenkel', 'fleisch-fisch', 'g', 1000, 4.49, [150, 13.5, 0, 10.5, 0], { pg: 300, pl: ['Schenkel', 'Schenkel'], an: ['fleisch'], grp: 'fleisch', keep: 2, col: '#D9925B' }),
+  I('rinderhack', 'Rinderhackfleisch', 'fleisch-fisch', 'g', 500, 5.99, [210, 19, 0, 15, 0], { an: ['fleisch'], grp: 'rot', keep: 1, col: '#9C4A3A' }),
+  I('gemischtes-hack', 'Hackfleisch (gemischt)', 'fleisch-fisch', 'g', 500, 4.29, [260, 18, 0, 21, 0], { an: ['fleisch'], grp: 'rot', keep: 1, col: '#A5543F' }),
+  I('rindergulasch', 'Rindergulasch', 'fleisch-fisch', 'g', 500, 7.49, [120, 21, 0, 4, 0], { an: ['fleisch'], grp: 'rot', keep: 2, col: '#7E3B2E' }),
+  I('lachsfilet', 'Lachsfilet', 'fleisch-fisch', 'g', 250, 4.99, [200, 20, 0, 13.4, 0], { al: ['fisch'], an: ['fisch'], grp: 'fisch', keep: 2, col: '#F08A6A', packLabel: '2 Filets (250 g)' }),
+
+  // Tiefkühl
+  I('seelachs', 'Seelachsfilet (TK)', 'tk', 'g', 400, 3.49, [80, 18, 0, 0.9, 0], { al: ['fisch'], an: ['fisch'], grp: 'fisch', col: '#F2EDE2' }),
+  I('fischstaebchen', 'Fischstäbchen (TK)', 'tk', 'g', 450, 2.49, [190, 13, 17, 7.5, 1], { pg: 30, pl: STK, al: ['fisch', 'gluten'], an: ['fisch'], grp: 'fisch', col: '#E3A64B', packLabel: '15 Stück (450 g)' }),
+  I('erbsen', 'Erbsen (TK)', 'tk', 'g', 450, 1.19, [70, 5.4, 10, 0.4, 5], { grp: 'gemuese', col: '#7BB33E' }),
+  I('tk-spinat', 'Blattspinat (TK)', 'tk', 'g', 450, 1.29, [23, 2.9, 0.6, 0.4, 2.6], { grp: 'gemuese', col: '#2F6B33' }),
+  I('tk-beeren', 'Beerenmischung (TK)', 'tk', 'g', 300, 2.49, [40, 1, 6.5, 0.4, 4], { grp: 'obst', col: '#7A2D5A' }),
+  I('edamame', 'Edamame (TK)', 'tk', 'g', 400, 2.49, [121, 11, 8.9, 5.2, 5], { al: ['soja'], grp: 'huelsen', col: '#6FAF4A' }),
+
+  // Nudeln, Reis & Getreide
+  I('spaghetti', 'Spaghetti', 'trocken', 'g', 500, 0.99, [355, 12.5, 71, 1.5, 3], { al: ['gluten'], col: '#EDD48A', sub: ['gf-pasta'] }),
+  I('vollkornspaghetti', 'Vollkornspaghetti', 'trocken', 'g', 500, 1.19, [340, 14, 62, 2.5, 8], { al: ['gluten'], grp: 'vollkorn', col: '#C9A05E', sub: ['gf-pasta'] }),
+  I('penne', 'Penne', 'trocken', 'g', 500, 0.99, [355, 12.5, 71, 1.5, 3], { al: ['gluten'], col: '#EDD48A', sub: ['gf-pasta'] }),
+  I('bandnudeln', 'Eierbandnudeln', 'trocken', 'g', 500, 1.49, [365, 13, 70, 3, 3], { al: ['gluten', 'ei'], an: ['ei'], col: '#F0CF6E', sub: ['gf-pasta'] }),
+  I('lasagneplatten', 'Lasagneplatten', 'trocken', 'g', 250, 1.29, [355, 12.5, 71, 1.5, 3], { al: ['gluten'], col: '#EDD48A', sub: ['gf-lasagne'] }),
+  I('gf-pasta', 'Glutenfreie Pasta', 'trocken', 'g', 500, 2.29, [355, 7, 78, 1.5, 2], { col: '#EDD48A' }),
+  I('gf-lasagne', 'Glutenfreie Lasagneplatten', 'trocken', 'g', 250, 2.49, [355, 7, 78, 1.5, 2], { col: '#EDD48A' }),
+  I('mie-nudeln', 'Mie-Nudeln', 'trocken', 'g', 250, 1.49, [360, 12, 70, 2, 3], { al: ['gluten'], col: '#EBCB7A', sub: ['reisnudeln'] }),
+  I('reisnudeln', 'Reisnudeln', 'trocken', 'g', 250, 1.69, [360, 6, 82, 0.6, 1.5], { col: '#F1EAD8' }),
+  I('reis', 'Basmatireis', 'trocken', 'g', 1000, 2.49, [350, 7.5, 78, 0.6, 1.3], { col: '#F5F1E4' }),
+  I('risottoreis', 'Risottoreis', 'trocken', 'g', 500, 1.79, [345, 7, 77, 0.6, 1], { col: '#F3EEDD' }),
+  I('couscous', 'Couscous', 'trocken', 'g', 500, 1.29, [360, 12, 72, 1.6, 4], { al: ['gluten'], col: '#E6CB86', sub: ['quinoa'] }),
+  I('quinoa', 'Quinoa', 'trocken', 'g', 500, 3.49, [360, 14, 60, 6, 7], { grp: 'vollkorn', col: '#E5D3A0' }),
+  I('haferflocken', 'Haferflocken (zart)', 'trocken', 'g', 500, 0.69, [370, 13.5, 59, 7, 10], { al: ['gluten'], grp: 'vollkorn', el: 8, col: '#E3CC98', sub: ['gf-haferflocken'] }),
+  I('gf-haferflocken', 'Glutenfreie Haferflocken', 'trocken', 'g', 500, 2.49, [370, 13.5, 59, 7, 10], { grp: 'vollkorn', el: 8, col: '#E3CC98' }),
+  I('muesli', 'Früchtemüsli (ohne Zuckerzusatz)', 'trocken', 'g', 750, 2.29, [360, 9, 62, 6, 8], { al: ['gluten'], grp: 'vollkorn', col: '#C9A26B', sub: ['gf-haferflocken'] }),
+  I('semmelknoedel', 'Semmelknödel (Kochbeutel)', 'trocken', 'stk', 6, 1.99, [350, 11, 63, 4.5, 4], { pg: 33, pl: ['Semmelknödel', 'Semmelknödel'], al: ['gluten', 'ei', 'milch'], an: ['ei', 'milch'], col: '#D9B77A', packLabel: '6 Stück im Kochbeutel' }),
+  I('tellerlinsen', 'Tellerlinsen (braun)', 'trocken', 'g', 500, 1.69, [320, 24, 47, 1.5, 17], { grp: 'huelsen', col: '#7A5A3A' }),
+  I('rote-linsen', 'Rote Linsen', 'trocken', 'g', 500, 1.99, [340, 25, 50, 2, 11], { grp: 'huelsen', col: '#E0773A' }),
+  I('popcornmais', 'Popcornmais', 'trocken', 'g', 500, 1.49, [370, 12, 63, 4.5, 13], { grp: 'vollkorn', el: 12, col: '#F3E2A9' }),
+  I('reiswaffeln', 'Reiswaffeln (Vollkorn)', 'trocken', 'stk', 12, 0.99, [380, 8, 80, 3, 4], { pg: 8, pl: ['Reiswaffel', 'Reiswaffeln'], grp: 'vollkorn', col: '#EBDDB5', packLabel: '12 Stück' }),
+
+  // Konserven, Saucen & Aufstriche
+  I('passierte-tomaten', 'Passierte Tomaten', 'konserven', 'g', 500, 0.69, [32, 1.5, 5, 0.2, 1], { grp: 'gemuese', keep: 4, col: '#C23B22', packLabel: 'Packung 500 g' }),
+  I('gehackte-tomaten', 'Gehackte Tomaten', 'konserven', 'g', 400, 0.69, [22, 1.2, 3, 0.2, 1], { grp: 'gemuese', keep: 4, col: '#C9402A', packLabel: 'Dose 400 g' }),
+  I('tomatenmark', 'Tomatenmark', 'konserven', 'g', 200, 0.99, [89, 4.3, 14, 0.5, 4], { el: 15, tl: 5, keep: 21, col: '#B8321F', hide: true, packLabel: 'Tube 200 g' }),
+  I('kokosmilch', 'Kokosmilch', 'konserven', 'ml', 400, 1.49, [180, 1.5, 3, 18, 0], { keep: 3, col: '#F3EFE6', packLabel: 'Dose 400 ml' }),
+  I('kichererbsen', 'Kichererbsen (abgetropft)', 'konserven', 'g', 240, 0.89, [120, 6.7, 16, 2.6, 5.5], { grp: 'huelsen', keep: 3, col: '#D8B46A', packLabel: 'Dose (240 g abgetropft)' }),
+  I('kidneybohnen', 'Kidneybohnen (abgetropft)', 'konserven', 'g', 250, 0.79, [105, 7.5, 14, 0.5, 7], { grp: 'huelsen', keep: 3, col: '#8A2E2E', packLabel: 'Dose (250 g abgetropft)' }),
+  I('weisse-bohnen', 'Weiße Bohnen (abgetropft)', 'konserven', 'g', 250, 0.79, [95, 7, 13, 0.5, 6], { grp: 'huelsen', keep: 3, col: '#EEE6D3', packLabel: 'Dose (250 g abgetropft)' }),
+  I('mais', 'Mais (abgetropft)', 'konserven', 'g', 285, 0.99, [80, 2.8, 14, 1.2, 3], { grp: 'gemuese', keep: 3, col: '#F2C230', packLabel: 'Dose (285 g abgetropft)' }),
+  I('thunfisch', 'Thunfisch im eigenen Saft', 'konserven', 'g', 150, 1.69, [110, 25, 0, 1, 0], { al: ['fisch'], an: ['fisch'], grp: 'fisch', keep: 2, col: '#C9A28A', packLabel: 'Dose (150 g abgetropft)' }),
+  I('oliven', 'Schwarze Oliven', 'konserven', 'g', 160, 1.29, [145, 1, 1, 15, 4], { keep: 14, col: '#3A2E2A', packLabel: 'Glas (160 g abgetropft)' }),
+  I('kapern', 'Kapern', 'konserven', 'g', 60, 1.29, [23, 2.4, 1.7, 0.9, 3], { el: 10, tl: 4, keep: 30, col: '#6B7A3A', hide: true }),
+  I('erdnussbutter', 'Erdnussmus', 'konserven', 'g', 350, 2.49, [600, 25, 13, 49, 7], { al: ['erdnuss'], el: 16, tl: 6, keep: 90, col: '#B97A3E', hide: true, sub: ['mandelmus'] }),
+  I('mandelmus', 'Mandelmus', 'konserven', 'g', 250, 4.49, [620, 24, 6, 54, 10], { al: ['nuesse'], el: 16, tl: 6, keep: 90, col: '#C49A6C', hide: true }),
+  I('sojasauce', 'Sojasauce', 'konserven', 'ml', 250, 1.99, [60, 8, 6, 0, 0], { al: ['soja', 'gluten'], el: 15, tl: 5, keep: 180, col: '#3B2316', hide: true, sub: ['tamari', 'kokos-aminos'] }),
+  I('tamari', 'Tamari (glutenfreie Sojasauce)', 'konserven', 'ml', 250, 3.49, [70, 10, 5, 0, 0], { al: ['soja'], el: 15, tl: 5, keep: 180, col: '#3B2316', hide: true }),
+  I('kokos-aminos', 'Kokos-Aminos (sojafrei)', 'konserven', 'ml', 250, 4.99, [100, 0, 24, 0, 0], { el: 15, tl: 5, keep: 180, col: '#4A2E1E', hide: true }),
+  I('apfelessig', 'Apfelessig', 'konserven', 'ml', 500, 0.79, [20, 0, 0.9, 0, 0], { el: 15, tl: 5, col: '#E8C77A', hide: true }),
+  I('balsamico', 'Aceto Balsamico', 'konserven', 'ml', 500, 1.49, [90, 0.5, 17, 0, 0], { al: ['sulfite'], el: 15, tl: 5, col: '#3A2220', hide: true, sub: ['apfelessig'] }),
+  I('senf', 'Senf (mittelscharf)', 'konserven', 'g', 200, 0.79, [90, 6, 4, 5, 3], { al: ['senf'], el: 15, tl: 5, keep: 90, col: '#D9A42B', hide: true }),
+
+  // Backen, Süßes & Frühstück
+  I('honig', 'Honig', 'backen', 'g', 500, 4.29, [310, 0.4, 76, 0, 0], { an: ['honig'], el: 20, tl: 7, col: '#E9A93A', hide: true, sub: ['ahornsirup'] }),
+  I('ahornsirup', 'Ahornsirup', 'backen', 'ml', 250, 3.99, [260, 0, 67, 0, 0], { el: 15, tl: 5, col: '#B86B25', hide: true }),
+  I('zucker', 'Zucker', 'backen', 'g', 1000, 1.19, [400, 0, 100, 0, 0], { staple: true, el: 12, tl: 4, col: '#FFFFFF', hide: true }),
+  I('mehl', 'Weizenmehl (Type 405)', 'backen', 'g', 1000, 0.79, [340, 10, 71, 1, 4], { al: ['gluten'], el: 10, tl: 3, col: '#F7F3EA', hide: true, sub: ['gf-mehl'] }),
+  I('gf-mehl', 'Glutenfreie Mehlmischung', 'backen', 'g', 1000, 3.49, [350, 3, 80, 1.5, 4], { el: 10, tl: 3, col: '#F7F3EA', hide: true }),
+  I('backpulver', 'Backpulver', 'backen', 'g', 60, 0.59, [100, 0, 25, 0, 0], { tl: 4, col: '#FFFFFF', hide: true, packLabel: '4 Päckchen' }),
+  I('kakao', 'Backkakao', 'backen', 'g', 125, 1.99, [360, 20, 11, 12, 30], { el: 6, tl: 2, col: '#5A3A2A', hide: true }),
+
+  // Gewürze, Öle & Brühe
+  I('salz', 'Jodsalz', 'gewuerze', 'g', 500, 0.39, [0, 0, 0, 0, 0], { staple: true, tl: 6, el: 18, col: '#FFFFFF', hide: true }),
+  I('pfeffer', 'Schwarzer Pfeffer (gemahlen)', 'gewuerze', 'g', 50, 1.29, [250, 10, 38, 3, 25], { staple: true, tl: 2.3, col: '#333333', hide: true }),
+  I('olivenoel', 'Olivenöl', 'gewuerze', 'ml', 750, 7.49, [819, 0, 0, 91, 0], { staple: true, el: 10, tl: 4, col: '#B5A642', hide: true }),
+  I('rapsoel', 'Rapsöl', 'gewuerze', 'ml', 1000, 2.29, [819, 0, 0, 91, 0], { staple: true, el: 10, tl: 4, col: '#E3C75A', hide: true }),
+  I('zimt', 'Zimt (gemahlen)', 'gewuerze', 'g', 40, 0.99, [250, 4, 27, 1.2, 53], { tl: 2.5, col: '#8B5A2B', hide: true }),
+  I('currypulver', 'Currypulver', 'gewuerze', 'g', 50, 1.29, [325, 13, 25, 14, 33], { tl: 2.5, el: 7, col: '#D9A02B', hide: true }),
+  I('kurkuma', 'Kurkuma (gemahlen)', 'gewuerze', 'g', 40, 1.29, [312, 10, 44, 3, 21], { tl: 3, col: '#E3A21A', hide: true }),
+  I('paprikapulver', 'Paprikapulver (edelsüß)', 'gewuerze', 'g', 50, 0.99, [290, 14, 19, 13, 35], { tl: 2.5, el: 7, col: '#C0392B', hide: true }),
+  I('kreuzkuemmel', 'Kreuzkümmel (gemahlen)', 'gewuerze', 'g', 40, 1.29, [375, 18, 34, 22, 11], { tl: 2, col: '#8A6A3A', hide: true }),
+  I('oregano', 'Oregano (getrocknet)', 'gewuerze', 'g', 15, 0.99, [265, 9, 26, 4, 42], { tl: 1, col: '#5A6B3A', hide: true }),
+  I('majoran', 'Majoran (getrocknet)', 'gewuerze', 'g', 15, 0.99, [270, 13, 20, 7, 40], { tl: 1, col: '#5A6B3A', hide: true }),
+  I('chiliflocken', 'Chiliflocken', 'gewuerze', 'g', 30, 1.29, [280, 12, 20, 14, 34], { tl: 1.5, col: '#B3261E', hide: true }),
+  I('muskat', 'Muskatnuss (gemahlen)', 'gewuerze', 'g', 30, 1.49, [525, 6, 28, 36, 21], { tl: 2, col: '#8A5A3A', hide: true }),
+  I('hefeflocken', 'Hefeflocken', 'gewuerze', 'g', 100, 2.99, [350, 47, 17, 4, 21], { el: 5, tl: 2, keep: 180, col: '#F0D56A', hide: true }),
+  I('gemuesebruehe', 'Gemüsebrühe (Instant)', 'gewuerze', 'ml', 8000, 1.79, [5, 0.2, 0.6, 0.2, 0], { al: ['sellerie'], col: '#D9B25A', hide: true, packLabel: 'Glas Brühpulver (ergibt 8 l)', sub: ['bruehe-ohne-sellerie'] }),
+  I('bruehe-ohne-sellerie', 'Gemüsebrühe ohne Sellerie', 'gewuerze', 'ml', 6000, 2.79, [5, 0.2, 0.6, 0.2, 0], { col: '#D9B25A', hide: true, packLabel: 'Glas Brühpulver (ergibt 6 l)' }),
+
+  // Nüsse, Saaten & Trockenobst
+  I('walnuesse', 'Walnusskerne', 'nuesse', 'g', 200, 2.79, [654, 15.2, 7, 65, 6.7], { al: ['nuesse'], grp: 'nuss', keep: 90, col: '#8C6239', sub: ['kuerbiskerne'] }),
+  I('mandeln', 'Mandeln', 'nuesse', 'g', 200, 2.79, [576, 21, 7, 49, 12.5], { al: ['nuesse'], grp: 'nuss', keep: 90, col: '#C49A6C', sub: ['kuerbiskerne'] }),
+  I('erdnuesse', 'Erdnüsse (geröstet, ungesalzen)', 'nuesse', 'g', 200, 1.49, [590, 25, 12, 49, 8], { al: ['erdnuss'], grp: 'nuss', keep: 90, col: '#C8945A', sub: ['kuerbiskerne'] }),
+  I('kuerbiskerne', 'Kürbiskerne', 'nuesse', 'g', 200, 1.99, [560, 30, 5, 49, 9], { grp: 'nuss', keep: 90, col: '#5E7A3A' }),
+  I('studentenfutter', 'Studentenfutter', 'nuesse', 'g', 200, 1.99, [470, 13, 40, 28, 6], { al: ['nuesse'], grp: 'nuss', keep: 90, col: '#9C6B3E' }),
+  I('datteln', 'Datteln (entsteint)', 'nuesse', 'g', 200, 1.99, [282, 2.5, 64, 0.4, 8], { keep: 120, col: '#6E3B1F' }),
+  I('chiasamen', 'Chiasamen', 'nuesse', 'g', 200, 2.49, [490, 17, 8, 31, 34], { el: 12, tl: 4, keep: 180, col: '#3C3A38', hide: true }),
+  I('leinsamen', 'Leinsamen (geschrotet)', 'nuesse', 'g', 500, 1.49, [534, 18.3, 1.6, 42.2, 27.3], { el: 8, tl: 3, keep: 90, col: '#8A6A44', hide: true }),
+
+  // Sonstiges
+  I('wasser', 'Wasser', 'sonstiges', 'ml', 1000, 0, [0, 0, 0, 0, 0], { free: true, col: '#FFFFFF', hide: true }),
+];
+
+export const ING: Record<string, Ingredient> = Object.fromEntries(INGREDIENTS.map((i) => [i.id, i]));
+
+/** Zutaten, die nur als Ersatz dienen und in Auswahllisten nach hinten rücken. */
+export const SUBSTITUTE_ONLY = new Set([
+  'milch-lf', 'joghurt-lf', 'quark-lf', 'frischkaese-lf', 'sahne-lf', 'gf-brot', 'mais-tortilla', 'gf-pasta',
+  'gf-lasagne', 'gf-gnocchi', 'gf-haferflocken', 'gf-mehl', 'reisnudeln', 'tamari', 'kokos-aminos',
+  'bruehe-ohne-sellerie', 'vegan-feta', 'vegan-kaese', 'vegan-frischkaese', 'soja-cuisine', 'mandelmus', 'wasser',
+]);
