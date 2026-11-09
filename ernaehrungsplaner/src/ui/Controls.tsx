@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from './Icon';
 import { closeModal, dismissToast, useUi } from '../state/ui';
 
@@ -14,6 +14,70 @@ export function Button({ variant = 'ghost', icon, small, className, children, ..
       {icon ? <Icon name={icon} size={small ? 15 : 17} /> : null}
       {children ? <span>{children}</span> : null}
     </button>
+  );
+}
+
+/**
+ * Zahlenfeld, das beim Tippen nicht eingreift: Zwischenstände wie „3“ (auf dem Weg zu „34“) oder ein
+ * leeres Feld bleiben stehen. Gültige Werte werden sofort übernommen, beim Verlassen wird auf den
+ * erlaubten Bereich begrenzt.
+ */
+export function NumberInput({ id, value, onCommit, min, max, step = 1, decimals = 0, label, suffix }: {
+  id?: string; value: number; onCommit: (v: number) => void; min: number; max: number; step?: number; decimals?: number; label?: string; suffix?: string;
+}) {
+  const fmt = (v: number) => (decimals ? String(v).replace('.', ',') : String(Math.round(v)));
+  const [draft, setDraft] = useState(fmt(value));
+  const focused = useRef(false);
+  useEffect(() => {
+    if (!focused.current) setDraft(fmt(value));
+  }, [value]);
+  const parse = (s: string) => {
+    const n = Number(s.trim().replace(',', '.'));
+    return s.trim() !== '' && Number.isFinite(n) ? n : null;
+  };
+  const clamp = (n: number) => {
+    const f = 10 ** decimals;
+    return Math.min(max, Math.max(min, Math.round(n * f) / f));
+  };
+  const commit = () => {
+    focused.current = false;
+    const n = parse(draft);
+    const v = n === null ? value : clamp(n);
+    setDraft(fmt(v));
+    if (v !== value) onCommit(v);
+  };
+  return (
+    <span className="num-input">
+      <input
+        id={id}
+        type="text"
+        inputMode={decimals ? 'decimal' : 'numeric'}
+        aria-label={label}
+        value={draft}
+        onFocus={(e) => {
+          focused.current = true;
+          e.currentTarget.select();
+        }}
+        onChange={(e) => {
+          const s = e.target.value.replace(/[^0-9.,-]/g, '');
+          setDraft(s);
+          const n = parse(s);
+          if (n !== null && n >= min && n <= max && n !== value) onCommit(clamp(n));
+        }}
+        onBlur={commit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') (e.currentTarget as HTMLInputElement).blur();
+          if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            const base = parse(draft) ?? value;
+            const v = clamp(base + (e.key === 'ArrowUp' ? step : -step));
+            setDraft(fmt(v));
+            onCommit(v);
+          }
+        }}
+      />
+      {suffix ? <span className="num-suffix">{suffix}</span> : null}
+    </span>
   );
 }
 

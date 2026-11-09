@@ -8,7 +8,7 @@ import { INGREDIENTS, ING, SUBSTITUTE_ONLY } from '../data/ingredients';
 import { energyReference, suggestedPortion } from '../lib/nutrition';
 import { servingsFor } from '../lib/planner';
 import { fmt0, fmtFrac } from '../lib/format';
-import { Button, Chip, Field, Segmented, Stepper, Switch } from '../ui/Controls';
+import { Button, Chip, Field, NumberInput, Segmented, Stepper, Switch } from '../ui/Controls';
 import { Icon } from '../ui/Icon';
 import { SyncBadge } from '../App';
 
@@ -92,7 +92,7 @@ export function ProfileView() {
           <h2 id="h-about">Über dich</h2>
           <div className="form-grid">
             <Field label="Alter" htmlFor="pf-age">
-              <input id="pf-age" type="number" min={14} max={110} value={p.age} onChange={(e) => set({ age: Math.max(14, Math.min(110, Number(e.target.value) || 30)) })} />
+              <NumberInput id="pf-age" value={p.age} min={14} max={110} onCommit={(v) => set({ age: v })} suffix="Jahre" />
             </Field>
             <Field label="Geschlecht (optional)">
               <Segmented<Sex> label="Geschlecht" value={p.sex} onChange={(v) => set({ sex: v })} options={[{ id: 'w', label: 'weiblich' }, { id: 'm', label: 'männlich' }, { id: 'x', label: 'keine Angabe' }]} />
@@ -181,7 +181,7 @@ export function ProfileView() {
           <Field label={`Wochenbudget: ${fmt0(p.budget)} €`} htmlFor="pf-budget" hint={`Etwa ${(p.budget / Math.max(1, p.persons) / 7).toFixed(2).replace('.', ',')} € pro Person und Tag.`}>
             <div className="range-row">
               <input id="pf-budget" type="range" min={20} max={300} step={5} value={p.budget} onChange={(e) => set({ budget: Number(e.target.value) })} />
-              <input type="number" aria-label="Wochenbudget in Euro" min={10} max={1000} value={p.budget} onChange={(e) => set({ budget: Math.max(10, Number(e.target.value) || 10) })} />
+              <NumberInput label="Wochenbudget in Euro" value={p.budget} min={10} max={1000} step={5} onCommit={(v) => set({ budget: v })} suffix="€" />
             </div>
           </Field>
           <Field label={`Kochzeit unter der Woche: bis ${p.maxTime} Min.`} htmlFor="pf-time">

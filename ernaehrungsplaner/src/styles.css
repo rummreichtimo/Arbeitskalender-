@@ -786,6 +786,16 @@ textarea {
   background: var(--surface);
   min-width: 0;
 }
+@media (max-width: 899px), (pointer: coarse) {
+  input[type='text'],
+  input[type='number'],
+  input[type='search'],
+  input[type='date'],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
 textarea {
   resize: vertical;
   line-height: 1.5;
@@ -2426,9 +2436,24 @@ input[type='range'] {
   align-items: center;
   gap: 12px;
 }
-.range-row input[type='number'] {
-  width: 90px;
+.range-row .num-input {
+  width: 110px;
   flex: none;
+}
+.num-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 220px;
+}
+.num-input input {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.num-suffix {
+  color: var(--muted);
+  font-size: 14px;
+  white-space: nowrap;
 }
 .static-field {
   min-height: 40px;

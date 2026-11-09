@@ -57,7 +57,7 @@ export function AiRecipeModal({ day, slot }: { day?: number; slot?: SlotId }) {
               </select>
             </Field>
             <Field label="Höchstens (Min.)" htmlFor="ai-time">
-              <input id="ai-time" type="number" min={5} max={240} value={maxTime} onChange={(e) => setMaxTime(e.target.value)} />
+              <input id="ai-time" type="text" inputMode="numeric" value={maxTime} onChange={(e) => setMaxTime(e.target.value)} />
             </Field>
             <Field label="Ernährungsweise">
               <span className="static-field">{DIET_LABEL[s.profile.diet]}</span>

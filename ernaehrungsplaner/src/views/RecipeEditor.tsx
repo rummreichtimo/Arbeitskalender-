@@ -127,9 +127,9 @@ export function RecipeEditor({ id, draft }: { id?: string; draft?: unknown }) {
         </Field>
 
         <div className="form-grid form-grid-4">
-          <Field label="Portionen" htmlFor="ed-serv"><input id="ed-serv" type="number" min={1} max={12} value={servings} onChange={(e) => setServings(e.target.value)} /></Field>
-          <Field label="Vorbereitung (Min.)" htmlFor="ed-prep"><input id="ed-prep" type="number" min={0} value={prep} onChange={(e) => setPrep(e.target.value)} /></Field>
-          <Field label="Garzeit (Min.)" htmlFor="ed-cook"><input id="ed-cook" type="number" min={0} value={cook} onChange={(e) => setCook(e.target.value)} /></Field>
+          <Field label="Portionen" htmlFor="ed-serv"><input id="ed-serv" type="text" inputMode="numeric" value={servings} onChange={(e) => setServings(e.target.value)} /></Field>
+          <Field label="Vorbereitung (Min.)" htmlFor="ed-prep"><input id="ed-prep" type="text" inputMode="numeric" value={prep} onChange={(e) => setPrep(e.target.value)} /></Field>
+          <Field label="Garzeit (Min.)" htmlFor="ed-cook"><input id="ed-cook" type="text" inputMode="numeric" value={cook} onChange={(e) => setCook(e.target.value)} /></Field>
           <Field label="Schwierigkeit">
             <Segmented label="Schwierigkeit" value={diff} onChange={setDiff} options={[{ id: '1', label: 'Einfach' }, { id: '2', label: 'Mittel' }, { id: '3', label: 'Schwer' }]} />
           </Field>
